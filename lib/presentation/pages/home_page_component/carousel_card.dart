@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project_mob/presentation/data/models/article.dart';
+import 'package:project_mob/presentation/widgets/news_image.dart';
 
 class CarouselCard extends StatelessWidget {
   final Article article;
@@ -22,11 +23,11 @@ class CarouselCard extends StatelessWidget {
               Container(
                 width: 300,
                 height: 400,
-                // child: NewsImage(imageUrl: article.urlToImage.toString()),
-                child: Image.network(
-                  article.urlToImage ?? 'https://via.placeholder.com/400',
-                  fit: BoxFit.cover,
-                ),
+                child: NewsImage(imageUrl: article.urlToImage.toString()),
+                // child: Image.network(
+                //   article.urlToImage ?? 'https://via.placeholder.com/400',
+                //   fit: BoxFit.cover,
+                // ),
               ),
               Positioned(
                 bottom: 0,

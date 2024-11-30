@@ -3,8 +3,6 @@ import 'package:project_mob/presentation/data/models/article.dart';
 import 'package:project_mob/presentation/data/services/news_api_services.dart';
 import 'package:project_mob/presentation/pages/home_page_component/carousel.dart';
 import 'package:project_mob/presentation/pages/home_page_component/news_list.dart';
-import 'package:project_mob/presentation/pages/home_page_component/search_field.dart';
-import 'package:project_mob/presentation/widgets/bottom_nav_bar.dart';
 import 'package:project_mob/presentation/widgets/tab_nav_category.dart';
 
 class HomePage extends StatefulWidget {
@@ -70,10 +68,6 @@ class _HomePageState extends State<HomePage> {
             const SizedBox(height: 50),
             Padding(
               padding: const EdgeInsets.all(16.0),
-              child: SearchField(),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(16.0),
               child: Text(
                 'Berita Terkini',
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
@@ -89,14 +83,13 @@ class _HomePageState extends State<HomePage> {
                 ? Center(
                     child: CircularProgressIndicator(),
                   )
-                : NewsList(
-                    articles: articlesByCategory,
-                  ),
+                : NewsList(articles: articlesByCategory),
+            SizedBox(height: 90),
           ],
         ),
-      ),
-      bottomNavigationBar: BottomNavBar(
-        selectedIndex: 0,
+        // ),
+        // // bottomNavigationBar: BottomNavBar(
+        // //   selectedIndex: 0,
       ),
     );
   }

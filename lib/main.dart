@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:project_mob/presentation/pages/home_page.dart';
+import 'package:project_mob/presentation/widgets/bottom_nav_bar.dart';
 
 void main() {
   runApp(const MyApp());
@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       // home: const MyHomePage(title: 'Flutter Demo Home Page'),
-      home: HomePage(),
+      home: BottomNavBar(selectedIndex: 0),
       // home: NewsDetailPage(title: "Judul Berita",),
       // initialRoute: '/',
       // routes: {

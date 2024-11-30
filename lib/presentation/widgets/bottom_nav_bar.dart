@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:project_mob/core/utils/constant_color.dart';
-import 'package:project_mob/presentation/pages/favorite_page.dart';
 import 'package:project_mob/presentation/pages/home_page.dart';
 import 'package:project_mob/presentation/pages/profil_page.dart';
+import 'package:project_mob/presentation/pages/search_page.dart';
 
 class BottomNavBar extends StatefulWidget {
   const BottomNavBar({
@@ -17,52 +17,51 @@ class BottomNavBar extends StatefulWidget {
 }
 
 class _BottomNavBarState extends State<BottomNavBar> {
-  void _onItemTapped(int index) {
-    //Verif apakah di halaman yang sama
-    if (index == widget.selectedIndex) {
-      return;
-    }
-    setState(() {
-      int _currentIndex = index; // Update the current index
-    });
+  // Track the current index of the bottom navigation
+  int _currentIndex = 0;
 
-    // Handle navigasi
-    switch (index) {
-      case 0: // Home
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => HomePage(),
-          ),
-        );
-        break;
-      case 1: // Favorite
-        Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => FavoritePage()),
-            ); // Update with your favorite route
-        break;
-      case 2: // Profile
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-              builder: (context) => ProfilePage()), // Navigate to ProfilePage
-        );
-        break;
-    }
+  @override
+  void initState() {
+    super.initState();
+    _currentIndex = widget
+        .selectedIndex; // Initialize _currentIndex with the selected index passed from the parent widget
+  }
+
+  // Method to handle when a navigation item is tapped
+  void _onItemTapped(int index) {
+    setState(() {
+      _currentIndex = index; // Update _currentIndex to the tapped index
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return BottomNavigationBar(
-      items: [
-        BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-        BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Search'),
-        BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
+    return Column(
+      children: [
+        // Conditional rendering of the pages based on _currentIndex
+        Expanded(
+          child: _currentIndex == 0
+              ? const HomePage()
+              : _currentIndex == 1
+                  ? const SearchPage()
+                  : ProfilePage(),
+        ),
+
+        // Bottom navigation bar
+        BottomNavigationBar(
+          items: const [
+            BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+            BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Search'),
+            BottomNavigationBarItem(icon: Icon(Icons.person), label: 'About'),
+          ],
+          currentIndex:
+              _currentIndex, // Bind _currentIndex to track selected tab
+          selectedItemColor:
+              ConstantColor.primary, // Change the color of the selected item
+          selectedFontSize: 14,
+          onTap: _onItemTapped, // Trigger _onItemTapped when a tab is tapped
+        ),
       ],
-      currentIndex: widget.selectedIndex, // Use the state variable for currentIndex
-      selectedItemColor: ConstantColor.primary,
-      selectedFontSize: 14,
-      onTap: _onItemTapped, // Use the custom tap handler
     );
   }
 }

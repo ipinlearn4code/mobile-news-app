@@ -23,7 +23,7 @@ class NewsListCard extends StatelessWidget {
             height: 150,
             width: double.infinity,
             child: NewsImage(
-              imageUrl: article.urlToImage ?? 'https://via.placeholder.com/400',
+              imageUrl: article.urlToImage.toString(),
             ),
             
             // clipBehavior: Clip.hardEdge,

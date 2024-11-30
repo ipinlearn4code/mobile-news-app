@@ -48,4 +48,26 @@ class NewsApiService {
       throw Exception('Failed to load articles by category');
     }
   }
+
+  Future<ApiResponse> searchArticles(String query,
+      {String language = 'en', int pageSize = 7, int page = 1}) async {
+    final uri = Uri.parse(
+      '$_baseUrl/everything?q=$query&language=$language&pageSize=$pageSize&page=$page&apiKey=$_apiKey',
+    );
+
+    final response = await http.get(uri);
+
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      List<Article> articles = (data['articles'] as List)
+          .map((articleJson) => Article.fromJson(articleJson))
+          .toList();
+      return ApiResponse(
+          status: data['status'],
+          articles: articles,
+          totalResults: data['totalResults']);
+    } else {
+      throw Exception('Failed to load search results');
+    }
+  }
 }
