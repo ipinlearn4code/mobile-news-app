@@ -1,18 +1,7 @@
-class ArticleSource {
-  final String? id;
-  final String name;
+// article.dart
 
-  ArticleSource({this.id, required this.name});
+import 'package:project_mob/presentation/data/models/article_source.dart';
 
-  factory ArticleSource.fromJson(Map<String, dynamic> json) {
-    return ArticleSource(
-      id: json['id'] as String?,
-      name: json['name'] as String,
-    );
-  }
-}
-
-// Model for the article
 class Article {
   final ArticleSource source;
   final String? author;
@@ -46,5 +35,18 @@ class Article {
       publishedAt: DateTime.parse(json['publishedAt']),
       content: json['content'] as String?,
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'source': source.toJson(),
+      'author': author,
+      'title': title,
+      'description': description,
+      'url': url,
+      'urlToImage': urlToImage,
+      'publishedAt': publishedAt.toIso8601String(),
+      'content': content,
+    };
   }
 }

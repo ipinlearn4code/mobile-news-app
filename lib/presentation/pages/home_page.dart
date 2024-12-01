@@ -1,11 +1,20 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:project_mob/presentation/data/models/article.dart';
 import 'package:project_mob/presentation/data/services/news_api_services.dart';
 import 'package:project_mob/presentation/pages/home_page_component/carousel.dart';
 import 'package:project_mob/presentation/pages/home_page_component/news_list.dart';
 import 'package:project_mob/presentation/widgets/tab_nav_category.dart';
+
+// A simple widget for showing loading indicator or content
+Widget buildLoadingOrContent({
+  required bool isLoading,
+  required Widget content,
+}) {
+  return isLoading
+      ? Center(child: CircularProgressIndicator())
+      : content;
+}
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -21,6 +30,8 @@ class _HomePageState extends State<HomePage> {
   bool isLoadingHeadlines = true;
   bool isLoadingByCategory = true;
 
+  final NewsApiService _newsApiService = NewsApiService();
+
   @override
   void initState() {
     super.initState();
@@ -31,8 +42,7 @@ class _HomePageState extends State<HomePage> {
   Future<void> _fetchArticles() async {
     try {
       log("Fetching All Articles");
-      final apiService = NewsApiService();
-      final response = await apiService.fetchTopHeadlines();
+      final response = await _newsApiService.fetchTopHeadlines();
       setState(() {
         articles = response.articles;
         isLoadingHeadlines = false;
@@ -47,8 +57,7 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> _fetchArticlesByCategory(String category) async {
     try {
-      final apiService = NewsApiService();
-      final response = await apiService.fetchByCategory(category);
+      final response = await _newsApiService.fetchByCategory(category);
       setState(() {
         articlesByCategory = response.articles;
         isLoadingByCategory = false;
@@ -76,23 +85,20 @@ class _HomePageState extends State<HomePage> {
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
             ),
-            isLoadingHeadlines
-                ? Center(child: CircularProgressIndicator())
-                : Carousel(articles: articles),
+            buildLoadingOrContent(
+              isLoading: isLoadingHeadlines,
+              content: Carousel(articles: articles),
+            ),
             TabNavCategory(
               onTabSelected: _fetchArticlesByCategory, // Pass new method
             ),
-            isLoadingByCategory
-                ? Center(
-                    child: CircularProgressIndicator(),
-                  )
-                : NewsList(articles: articlesByCategory),
+            buildLoadingOrContent(
+              isLoading: isLoadingByCategory,
+              content: NewsList(articles: articlesByCategory),
+            ),
             SizedBox(height: 90),
           ],
         ),
-        // ),
-        // // bottomNavigationBar: BottomNavBar(
-        // //   selectedIndex: 0,
       ),
     );
   }

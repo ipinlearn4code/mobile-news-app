@@ -23,11 +23,7 @@ class CarouselCard extends StatelessWidget {
               Container(
                 width: 300,
                 height: 400,
-                child: NewsImage(imageUrl: article.urlToImage.toString()),
-                // child: Image.network(
-                //   article.urlToImage ?? 'https://via.placeholder.com/400',
-                //   fit: BoxFit.cover,
-                // ),
+                child: NewsImage(imageUrl: article.urlToImage.toString()), // Display image
               ),
               Positioned(
                 bottom: 0,

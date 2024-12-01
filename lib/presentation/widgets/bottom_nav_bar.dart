@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:project_mob/core/utils/constant_color.dart';
 import 'package:project_mob/presentation/pages/home_page.dart';
-import 'package:project_mob/presentation/pages/profil_page.dart';
+import 'package:project_mob/presentation/pages/about_page.dart';
 import 'package:project_mob/presentation/pages/search_page.dart';
 
 class BottomNavBar extends StatefulWidget {
@@ -44,7 +44,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
               ? const HomePage()
               : _currentIndex == 1
                   ? const SearchPage()
-                  : ProfilePage(),
+                  : AboutPage(),
         ),
 
         // Bottom navigation bar
