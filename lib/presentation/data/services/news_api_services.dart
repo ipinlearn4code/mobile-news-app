@@ -8,9 +8,10 @@ class NewsApiService {
   static const String _baseUrl = 'https://newsapi.org/v2';
   static const String _apiKey = apiKey;
 
+  // Fetch Top Headlines with 5 articles limit
   Future<ApiResponse> fetchTopHeadlines({String country = 'us'}) async {
     final response = await http.get(
-      Uri.parse('$_baseUrl/top-headlines?country=$country&apiKey=$_apiKey'),
+      Uri.parse('$_baseUrl/top-headlines?country=$country&apiKey=$_apiKey&pageSize=5'),
     );
 
     if (response.statusCode == 200) {
@@ -27,10 +28,11 @@ class NewsApiService {
     }
   }
 
+  // Fetch Articles by Category with 5 articles limit
   Future<ApiResponse> fetchByCategory(String category,
       {String country = 'us'}) async {
     final uri = Uri.parse(
-      '$_baseUrl/top-headlines?country=$country&category=$category&apiKey=$_apiKey',
+      '$_baseUrl/top-headlines?country=$country&category=$category&apiKey=$_apiKey&pageSize=5',
     );
 
     final response = await http.get(uri);
@@ -49,10 +51,11 @@ class NewsApiService {
     }
   }
 
+  // Fetch Articles by Search Query with 5 articles limit
   Future<ApiResponse> searchArticles(String query,
-      {String language = 'en', int pageSize = 7, int page = 1}) async {
+      {String language = 'en', int pageSize = 5, int page = 1}) async {
     final uri = Uri.parse(
-      '$_baseUrl/everything?q=$query&language=$language&pageSize=$pageSize&page=$page&apiKey=$_apiKey',
+      '$_baseUrl/everything?q=$query&language=$language&pageSize=5&page=$page&apiKey=$_apiKey',
     );
 
     final response = await http.get(uri);

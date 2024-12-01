@@ -12,11 +12,12 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
-  final NewsApiService _newsApiService = NewsApiService(); // Instantiate the service
+  final NewsApiService _newsApiService = NewsApiService(); 
   List<Article> _articles = [];
   bool _isLoading = false;
-  String _query = ''; // The search query
-  bool _isFocused = false; // Track focus state of the text field
+  String _query = ''; 
+  bool _isFocused = false; 
+  List<String> _recentSearches = []; // To keep track of recent searches
 
   // Method to perform search
   void _searchArticles() async {
@@ -32,7 +33,6 @@ class _SearchPageState extends State<SearchPage> {
         _articles = response.articles;
       });
     } catch (e) {
-      // Handle error here (you could show an error message to the user)
       print('Error fetching articles: $e');
     } finally {
       setState(() {
@@ -48,57 +48,98 @@ class _SearchPageState extends State<SearchPage> {
     });
   }
 
-  // Build the search input and list of articles
+  // Add recent search to the list
+  void _addRecentSearch(String query) {
+    if (!_recentSearches.contains(query)) {
+      setState(() {
+        _recentSearches.add(query);
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(  // Make the entire body scrollable
-        padding: EdgeInsets.only(top: 60, left: 8, right: 8),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            // Animated Search Field
-            AnimatedContainer(
-              duration: const Duration(milliseconds: 300), // Set duration of the animation
-              padding: EdgeInsets.symmetric(horizontal: 16),
-              height: _isFocused ? 50 : 80,  // Adjust height based on focus
-              alignment: _isFocused ? Alignment.centerLeft : Alignment.center, // Adjust position based on focus
-              curve: Curves.easeInOut,
-              child: TextField(
-                focusNode: FocusNode()..addListener(() {
-                  _onFocusChange(true);
-                }), // When text field is focused, set _isFocused to true
-                decoration: InputDecoration(
-                  hintText: 'Search...', // Placeholder text
-                  border: _isFocused ? OutlineInputBorder() : InputBorder.none , // No border on TextField itself
-                  contentPadding: EdgeInsets.symmetric(horizontal: 16), // Padding inside the TextField
-                  suffixIcon: !_isFocused ? Icon(
-                    Icons.search,
-                    color: Colors.grey, // Color of the search icon
-                  ) : null,  // Hide icon when focused
-                ),
-                onChanged: (value) {
-                  setState(() {
-                    _query = value;
-                  });
-                  _searchArticles();  // Trigger search as the user types
-                },
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 1,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () => Navigator.pop(context),
+        ),
+        title: AnimatedContainer(
+          duration: const Duration(milliseconds: 300),
+          height: _isFocused ? 40 : 50,
+          curve: Curves.easeInOut,
+          child: TextField(
+            autofocus: false,
+            focusNode: FocusNode()..addListener(() {
+              _onFocusChange(true);
+            }),
+            decoration: InputDecoration(
+              hintText: 'Search...',
+              hintStyle: TextStyle(color: Colors.grey),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(20),
+                borderSide: BorderSide(color: Colors.grey),
+              ),
+              contentPadding: EdgeInsets.symmetric(horizontal: 16),
+              suffixIcon: IconButton(
+                icon: Icon(Icons.search, color: Colors.black),
+                onPressed: _searchArticles,
               ),
             ),
-
-            const SizedBox(height: 10),
-
-            // Loading Indicator
-            if (_isLoading) const CircularProgressIndicator(),
-
-            // No results found message
-            if (!_isLoading && _articles.isEmpty && _query.isNotEmpty)
-              const Text('No results found'),
-
-            // Display search results using NewsList
-            if (!_isLoading && _articles.isNotEmpty)
-              NewsList(articles: _articles), // Removed Expanded to allow scrolling
-          ],
+            onChanged: (value) {
+              setState(() {
+                _query = value;
+              });
+              _searchArticles();
+            },
+          ),
+        ),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Recent searches and suggestions
+              if (!_isFocused && _recentSearches.isNotEmpty) ...[
+                Text('Recent Searches', style: TextStyle(fontWeight: FontWeight.bold)),
+                SizedBox(height: 8),
+                Expanded(
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: _recentSearches.length,
+                    itemBuilder: (context, index) {
+                      String recentSearch = _recentSearches[index];
+                      return ListTile(
+                        title: Text(recentSearch),
+                        onTap: () {
+                          setState(() {
+                            _query = recentSearch;
+                          });
+                          _searchArticles();
+                        },
+                      );
+                    },
+                  ),
+                ),
+              ],
+          
+              // Loading indicator
+              if (_isLoading) const Center(child: CircularProgressIndicator()),
+          
+              // No results found message
+              if (!_isLoading && _articles.isEmpty && _query.isNotEmpty)
+                const Text('No results found'),
+          
+              // Display search results
+              if (!_isLoading && _articles.isNotEmpty)
+                NewsList(articles: _articles),
+            ],
+          ),
         ),
       ),
     );

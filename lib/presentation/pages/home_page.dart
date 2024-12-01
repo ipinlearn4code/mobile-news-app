@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:project_mob/presentation/data/models/article.dart';
 import 'package:project_mob/presentation/data/services/news_api_services.dart';
@@ -21,13 +23,14 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
-    // super.initState();
+    super.initState();
     _fetchArticles();
     _fetchArticlesByCategory('general');
   }
 
   Future<void> _fetchArticles() async {
     try {
+      log("Fetching All Articles");
       final apiService = NewsApiService();
       final response = await apiService.fetchTopHeadlines();
       setState(() {
