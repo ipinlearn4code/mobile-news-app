@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart'; // For launching URLs
-
+import 'package:url_launcher/url_launcher.dart'; 
 class AboutPage extends StatelessWidget {
   const AboutPage({Key? key}) : super(key: key);
 
@@ -32,14 +31,12 @@ class AboutPage extends StatelessWidget {
             ),
             const SizedBox(height: 24),
 
-            // App Description
             const Text(
               "This is a news aggregation app where you can read the latest news from various categories such as General, Technology, Business, and more. The app fetches news from a reliable API and displays them in an easy-to-read format. Enjoy staying updated with the latest happenings around the world!",
               style: TextStyle(fontSize: 16, color: Colors.black54),
             ),
             const SizedBox(height: 24),
 
-            // Author Section
             const Text(
               "About the Author",
               style: TextStyle(
@@ -55,7 +52,6 @@ class AboutPage extends StatelessWidget {
             ),
             const SizedBox(height: 24),
 
-            // Social Links
             const Text(
               "Connect with me:",
               style: TextStyle(
@@ -66,10 +62,9 @@ class AboutPage extends StatelessWidget {
             ),
             const SizedBox(height: 8),
 
-            // Instagram
             InkWell(
               onTap: () => _launchURL(
-                  'https://www.instagram.com/alfrrrrd_'), // Replace with your Instagram URL
+                  'https://www.instagram.com/alfrrrrd_'), 
               child: Row(
                 children: const [
                   Icon(Icons.camera_alt, color: Colors.purple),
@@ -83,10 +78,9 @@ class AboutPage extends StatelessWidget {
             ),
             const SizedBox(height: 16),
 
-            // Facebook
             InkWell(
               onTap: () => _launchURL(
-                  'https://www.facebook.com/Wijay.AlKhabbany?_rdr'), // Replace with your Facebook URL
+                  'https://www.facebook.com/Wijay.AlKhabbany?_rdr'), 
               child: Row(
                 children: const [
                   Icon(Icons.facebook, color: Colors.blue),
@@ -100,10 +94,9 @@ class AboutPage extends StatelessWidget {
             ),
             const SizedBox(height: 16),
 
-            // GitHub
             InkWell(
               onTap: () => _launchURL(
-                  'https://github.com/ipinlearn4code'), // Replace with your GitHub URL
+                  'https://github.com/ipinlearn4code'),
               child: Row(
                 children: const [
                   Icon(Icons.code, color: Colors.black),

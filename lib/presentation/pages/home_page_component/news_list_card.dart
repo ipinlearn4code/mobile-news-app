@@ -18,7 +18,6 @@ class NewsListCard extends StatelessWidget {
       child: Stack(
         clipBehavior: Clip.hardEdge,
         children: [
-          // Background Image
           Container(
             height: 150,
             width: double.infinity,
@@ -26,20 +25,7 @@ class NewsListCard extends StatelessWidget {
               imageUrl: article.urlToImage.toString(),
             ),
             
-            // clipBehavior: Clip.hardEdge,
-            // decoration: BoxDecoration(
-            //   borderRadius: BorderRadius.circular(10),
-            //   image: DecorationImage(
-            //     image: article.urlToImage != null
-            //         ? NetworkImage(article.urlToImage!)
-            //         : NetworkImage('https://via.placeholder.com/400'),
-            //     fit: BoxFit.cover,
-            //   ),
-            // ),
-            // width: double.infinity,
-            // height: double.infinity,
           ),
-          // Title and description on top of the image
           Positioned(
             bottom: 0,
             left: 0,

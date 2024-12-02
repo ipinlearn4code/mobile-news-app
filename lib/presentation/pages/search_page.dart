@@ -169,22 +169,24 @@ class _SearchPageState extends State<SearchPage> {
               if (_isFocused && _recentSearches.isNotEmpty) ...[
                 Text('Recent Searches', style: TextStyle(fontWeight: FontWeight.bold)),
                 SizedBox(height: 8),
-                ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: _recentSearches.length,
-                  itemBuilder: (context, index) {
-                    String recentSearch = _recentSearches[index];
-                    return ListTile(
-                      title: Text(recentSearch),
-                      onTap: () {
-                        setState(() {
-                          _query = recentSearch;
-                          _controller.text = recentSearch; // Update text field
-                        });
-                        _searchArticles();
-                      },
-                    );
-                  },
+                SingleChildScrollView(
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: _recentSearches.length,
+                    itemBuilder: (context, index) {
+                      String recentSearch = _recentSearches[index];
+                      return ListTile(
+                        title: Text(recentSearch),
+                        onTap: () {
+                          setState(() {
+                            _query = recentSearch;
+                            _controller.text = recentSearch; // Update text field
+                          });
+                          _searchArticles();
+                        },
+                      );
+                    },
+                  ),
                 ),
               ],
 
